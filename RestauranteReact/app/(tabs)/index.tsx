@@ -6,12 +6,13 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useState } from 'react';
 import { blue } from 'react-native-reanimated/lib/typescript/reanimated2/Colors';
+import { Float } from 'react-native/Libraries/Types/CodegenTypes';
 //import { View } from 'react-native-reanimated/lib/typescript/Animated';
 type OpcionMenu = {
   id: string;
   categoria: string;
   nombre: string;
-  precio: number;
+  precio: Float;
   descripcion: string;
   //imagen: any;
 };
@@ -39,7 +40,7 @@ const MenuScreen=()=>{
   return(
     <View style={styles.contenedor}>
       <Text style={styles.titulo}>Menú</Text>
-      {/*selector de categorias que actualiza estado de la categoria*/}
+      {/* selector de categorias que actualiza estado de la categoria  */}
       <View style={styles.contenedorCategoria}>
         {/*Array con las categorias */}
         {['Bebidas Frías', 'Sopas', 'Plato del día','Platos a la carta','Menu infantil'].map((category)=>(
