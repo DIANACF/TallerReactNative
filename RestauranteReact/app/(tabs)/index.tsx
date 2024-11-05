@@ -1,10 +1,11 @@
-import { Image, StyleSheet, Platform, Text, View } from 'react-native';
+import { Image, StyleSheet, Platform, Text, View, TouchableOpacity, FlatList } from 'react-native';
 
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useState } from 'react';
+import { blue } from 'react-native-reanimated/lib/typescript/reanimated2/Colors';
 //import { View } from 'react-native-reanimated/lib/typescript/Animated';
 type OpcionMenu = {
   id: string;
@@ -33,25 +34,59 @@ const InfoMenu: OpcionMenu[]= [
 const MenuScreen=()=>{
   const [selectedCategory, setSelectedCategory] = useState<string>('Bebidas Frías');
 
+  //Filtro de comida por la categoria
+  const filtroMenu = InfoMenu.filter((item)=> item.categoria === selectedCategory);
+  return(
+    <View style={styles.contenedor}>
+      <Text style={styles.titulo}>Menú</Text>
+      {/*selector de categorias que actualiza estado de la categoria*/}
+      <View style={styles.contenedorCategoria}>
+        {/*Array con las categorias */}
+        {['Bebidas Frías', 'Sopas', 'Plato del día','Platos a la carta','Menu infantil'].map((category)=>(
+          <TouchableOpacity key={category} onPress={()=> setSelectedCategory(category)}>
+            <Text style={styles.categoria}>{category}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      {/*Lista de platos */}
+      <FlatList
+      data={filtroMenu}
+      keyExtractor={(item) => item.id}
+      renderItem={({item})=>(
+        <View style={styles.datosComida}>
+          <Text style={styles.nombreComida}>{item.nombre}</Text>
+          
+          <Text style={styles.precioComida}>${item.precio}</Text>
+          <Text style={styles.descripcionComida}>{item.descripcion}</Text>
+        </View>
+      )}
+      />
+    </View>
+  );
+
 
 }
 export default MenuScreen;
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  
+  contenedor: {flex: 1, padding: 20},
+  titulo:{fontSize: 24, fontWeight: 'bold', 
+    marginBottom: 10},
+  contenedorCategoria:{
+    flexDirection: 'row', 
+    flexWrap: 'wrap', 
+    justifyContent: 'space-around', 
+    marginVertical: 15,
+    
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  categoria:{
+    fontSize: 16,
+    marginTop:16 
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+  datosComida:{padding: 10, flexDirection: 'column', marginTop:20},
+  nombreComida: { fontSize: 18, fontWeight: 'bold'},
+  descripcionComida: { color: '#666'},
+  precioComida: { fontSize: 16, marginLeft: 10 },
 });
